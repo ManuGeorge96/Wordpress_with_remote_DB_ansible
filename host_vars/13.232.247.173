@@ -1,0 +1,12 @@
+---
+remote_ip: 65.2.69.201
+mysql_root: root@1234
+packages:
+   - mariadb-server
+#   - python3-pip
+#   - pip 
+#   - python3-mysqldb
+#   - python-mysqldb
+   - MySQL-python
+#   - libmysqlclient-dev
+    

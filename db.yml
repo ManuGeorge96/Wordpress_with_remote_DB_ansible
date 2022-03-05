@@ -1,0 +1,69 @@
+---
+#- include_vars: "./{{ ansible_os_family }}_var.yml"
+- name: "Updating Packages"
+  yum:
+    name: '*'
+    state: present
+    update_cache: true
+
+- name: "Creating User" 
+  user:
+    name: "{{ hostvars['65.2.69.201']['users'] }}"
+    state: present
+    shell: /bin/bash
+
+- name: "Installing Packages"
+  yum:
+    name: "{{ packages }}"
+    state: present
+  register: package  
+
+- name: "Starting MySQL Server"
+  service:
+    name: mariadb
+    state: restarted 
+  when: package.changed   
+
+- name: "Setting MySQL root Passwordd"
+  mysql_user:
+    user: root
+    password: "{{ mysql_root }}"
+    login_user: root
+    login_password: ""
+    host_all: true
+  ignore_errors: true
+  register: mysql 
+
+- name: "Removing Anonymous User"
+  mysql_user:
+    user: ""
+    state: absent
+    host_all: true
+    login_user: root
+    login_password: "{{ mysql_root }}"
+  when: mysql.changed  
+ 
+- name: "Remove Test Database"
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root }}"
+  when: mysql.changed  
+
+- name: "Creating Wordpress Database {{ hostvars['65.2.69.201']['db_name'] }}"
+  mysql_db:
+    name: "{{ hostvars['65.2.69.201']['db_name'] }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root }}"
+
+- name: "Creating Wordpress User {{ hostvars['65.2.69.201']['db_user'] }}"
+  mysql_user:
+    user: "{{ hostvars['65.2.69.201']['db_user'] }}"
+    host: "{{ hostvars['65.2.69.201']['ansible_eth0']['ipv4']['address'] }}"
+    password: "{{ hostvars['65.2.69.201']['db_pass'] }}"
+    priv: "{{ hostvars['65.2.69.201']['db_name'] }}.*:ALL"
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    state: present 

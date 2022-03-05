@@ -1,0 +1,69 @@
+---
+- name: "Updating On Web-server"
+  yum:
+    name: '*'
+    state: present
+    update_only: true
+    update_cache: true
+
+- name: "Adding user"
+  user:
+    name: "{{ users }}"
+    state: present
+    create_home: true
+    shell: /bin/bash
+  register: userss  
+
+- name: "Installing PHP"
+  shell: "amazon-linux-extras install php7.4 -y"
+
+- name: "Installing Packages"
+  yum:
+    name: "{{ packages }}"
+    state: present
+    #  register: package  
+
+- name: "Setting Directory Permissions"
+  file:
+    path: "/home/{{ users }}"
+    mode: 0755
+  when: userss.changed  
+    
+- name: "Setting Document Root for {{ users }}"
+  file:
+    path: "/home/{{ users }}/{{ domain }}"
+    state: directory
+    mode: 0755
+  register: dr
+  #when: userss.changed
+
+- name: "Setting virtualhost for {{ domain }}"   
+  template:
+    src: ./virtulahost.conf.tmpl
+    dest: "/etc/httpd/conf.d/{{ domain }}.conf"
+  register: vhost
+
+- name: "Setting up Wordpress files on {{ dr.diff.after.path }}"
+  shell: "wget https://wordpress.org/latest.tar.gz; tar xzf latest.tar.gz; mv wordpress/{.,}* .; rm -rf latest.tar.gz wordpress"
+  args:
+    chdir: "{{ dr.diff.after.path }}"
+  when: dr.changed  
+
+- name: "Updating Wordpress Configuration"
+  template:
+    src: ./wp-config.php.tmpl
+    dest: "{{ dr.diff.after.path }}/wp-config.php"  
+
+- name: "Seting File Permisions"
+  file:
+    path: "/home/{{ users }}"
+    recurse: true
+    owner: "{{ users }}"
+    group: "{{ users }}" 
+  when: userss.changed or dr.changed  
+
+- name: "Restarting Service"
+  service:
+    name: httpd
+    state: restarted
+  when: vhost.changed

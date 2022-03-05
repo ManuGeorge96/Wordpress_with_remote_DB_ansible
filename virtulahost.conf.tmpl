@@ -1,0 +1,14 @@
+<VirtualHost *:{{ http_port }}>
+  servername {{ domain }}
+  documentroot /home/{{ users }}/{{ domain }}
+  directoryindex index.php
+  <directory /home/{{ users }}/{{ domain }}>
+    allowoverride all
+    Require all granted
+  </directory>
+  <ifmodule proxy_fcgi_module>
+    <filesmatch \.(php[0-9]*)$>
+      sethandler proxy:unix:/var/run/php-fpm/www.sock|fcgi://{{ domain }}
+    </filesmatch>
+  </ifmodule>  
+</VirtualHost>
