@@ -1,10 +1,10 @@
 ---
 http_port: 80
-users: sam
-domain: sam2.devforfree.tech
-db: sam2-test
-db_user: sam2-test
-db_pass: sam2-test
+#users: sam
+#domain: sam2.devforfree.tech
+#db: sam2-test
+#db_user: sam2-test
+#db_pass: sam2-test
 packages:
    - httpd
    - docker

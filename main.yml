@@ -3,14 +3,15 @@
   hosts: all
   become: true
   tasks:
+          - include_vars: "./info.yml"
+                      
           - name: "setting fact values"
             set_fact:
-              users: "{{ users }}"       
-              db_name: "{{ db }}"
-              db_user: "{{ db_user }}"
-              db_pass: "{{ db_pass }}"
-              cacheable: true
-            when: ansible_default_ipv4.address == "172.31.6.241"  
+                users: "{{ users }}"       
+                db_name: "{{ db }}"
+                db_user: "{{ db_user }}"
+                db_pass: "{{ db_pass }}"
+                cacheable: true 
 
           - include_tasks: wp.yml
             when: ansible_default_ipv4.address == "172.31.6.241"
