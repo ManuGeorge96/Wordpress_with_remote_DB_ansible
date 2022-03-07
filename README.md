@@ -24,6 +24,15 @@ An Ansible playbook to build a Wordpress site with its database on a remote serv
         WP ansible_host=WP_SERVER_IP_HERE ansible_user=SSH_USER_ON_SERVER ansible_ssh_port=SSH_PORT ansible_ssh_private_key_file=PATH_TO_PRIVATE_KEY
         DB ansible_host=DB_SERVER_IP_HERE ansible_user=SSH_USER_ON_SERVER ansible_ssh_port=SSH_PORT ansible_ssh_private_key_file=PATH_TO_PRIVATE_KEY
        ```
+- Edit Required Data's on <b>main.yml</b> file.
+  ```sh
+    users: USER_NAME
+    db_name: WP_DB_NAME
+    db_user: WP_DB_USER
+    db_pass: WP_DB_PASSWORD
+    domain: DOMAIN_NAME
+    mysql_root: MYSQL_ROOT_PASSWORD
+  ```  
 -  ```sh
      ansible-playbook -i hosts main.yml  
    ```
