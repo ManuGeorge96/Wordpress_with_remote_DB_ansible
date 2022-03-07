@@ -1,20 +1,35 @@
 ---
-- name: "Apache Setup"
+- name: "Wordpress Setup"
   hosts: all
   become: true
   tasks:
-          - include_vars: "./info.yml"
+          # - include_vars: "./info.yml"
                       
           - name: "setting fact values"
             set_fact:
-                users: "{{ users }}"       
-                db_name: "{{ db }}"
-                db_user: "{{ db_user }}"
-                db_pass: "{{ db_pass }}"
-                cacheable: true 
+                users: manu
+                db_name: manu-db2
+                db_user: manu-user2
+                db_pass: manu@1234
+                domain: ansible2.devforfree.tech
+                cacheable: true
+
+          - name: "Fetching Private IP of WP Server"
+            set_fact:
+              wp_ip: "{{ ansible_eth0.ipv4.address }}"
+            when: inventory_hostname == "WP"
+
+          - name: "Fetching Private IP of DB Server"
+            set_fact:
+              db_ip: "{{ ansible_eth0.ipv4.address }}"
+            when: inventory_hostname == "DB"              
 
           - include_tasks: wp.yml
-            when: ansible_default_ipv4.address == "172.31.6.241"
+            when: inventory_hostname == "WP"
+            tags:
+              - http_only  
       
           - include_tasks: db.yml
-            when: ansible_default_ipv4.address == "172.31.3.193"     
+            when: inventory_hostname == "DB"
+            tags:
+              - mysql_only        

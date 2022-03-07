@@ -1,10 +1,12 @@
 ---
-- name: "Updating On Web-server"
+- name: "Updating On WP-server"
   yum:
     name: '*'
     state: present
     update_only: true
     update_cache: true
+  tags:
+    - wp_only        
 
 - name: "Adding user"
   user:
@@ -16,11 +18,15 @@
 
 - name: "Installing PHP"
   shell: "amazon-linux-extras install php7.4 -y"
+  tags:
+    - wp_only        
 
 - name: "Installing Packages"
   yum:
     name: "{{ packages }}"
     state: present
+  tags: 
+    - wp_only
     #  register: package  
 
 - name: "Setting Directory Permissions"
@@ -67,3 +73,5 @@
     name: httpd
     state: restarted
   when: vhost.changed
+  tags: 
+    - wp_only

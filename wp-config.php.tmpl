@@ -20,7 +20,7 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', '{{ db }}' );
+define( 'DB_NAME', '{{ db_name }}' );
 
 /** Database username */
 define( 'DB_USER', '{{ db_user }}' );
@@ -29,7 +29,7 @@ define( 'DB_USER', '{{ db_user }}' );
 define( 'DB_PASSWORD', '{{ db_pass }}' );
 
 /** Database hostname */
-define( 'DB_HOST', '{{ hostvars['13.232.247.173']['ansible_eth0']['ipv4']['address'] }}' );
+define( 'DB_HOST', '{{ hostvars['DB']['db_ip'] }}' );
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
