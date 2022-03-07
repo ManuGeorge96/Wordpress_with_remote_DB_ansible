@@ -2,7 +2,7 @@
 
 ## About
 
-An Ansible playbook to build a Wordpress site with its database on a remote server. You can also build a http only server or a mysql only server with this playbook.
+An Ansible playbook to build a Wordpress site with its database on a remote server. You can also build a http only server or a mysql only server with this playbook.( for AWS EC2 instances )
 
 ## Prerequisites
 
