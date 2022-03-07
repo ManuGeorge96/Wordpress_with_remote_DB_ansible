@@ -44,7 +44,7 @@
 
 - debug: var=mysql
 
-- name: "Removing Anonymous User"
+- name: "Removing Anonymous User.."
   mysql_user:
     user: ""
     state: absent

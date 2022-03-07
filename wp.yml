@@ -31,9 +31,12 @@
  
 - name: "Restarting.."
   service:
-    name: httpd
+    name: "{{ item }}"
     state: restarted
     enabled: true 
+  with_items:
+    - httpd
+    - php-fpm      
   tags: http_only    
 
 - name: "Setting Directory Permissions"
@@ -77,7 +80,10 @@
 
 - name: "Restarting Service"
   service:
-    name: httpd
+    name: "{{ item }}"
     state: restarted
     enabled: true
+  with_items: 
+    - httpd
+    - php-fpm  
   when: vhost.changed

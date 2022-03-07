@@ -1,5 +1,5 @@
 ---
-- name: "Wordpress Setup"
+- name: "Wordpress-Setup"
   hosts: all
   become: true
   tasks:              
