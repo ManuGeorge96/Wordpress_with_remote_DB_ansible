@@ -42,6 +42,8 @@
   tags:
     - mysql_only        
 
+- debug: var=mysql
+
 - name: "Removing Anonymous User"
   mysql_user:
     user: ""

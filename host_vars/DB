@@ -1,5 +1,5 @@
 ---
-mysql_root: root@1234
+mysql_root: root
 packages:
    - mariadb-server
    - MySQL-python

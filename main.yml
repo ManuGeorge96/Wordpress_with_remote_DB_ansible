@@ -12,7 +12,10 @@
                 db_user: manu-user2
                 db_pass: manu@1234
                 domain: ansible2.devforfree.tech
+                mysql_root: root@123
                 cacheable: true
+            tags:
+              - mysql_only        
 
           - name: "Fetching Private IP of WP Server"
             set_fact:
