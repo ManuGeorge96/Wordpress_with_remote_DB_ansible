@@ -1,3 +1,4 @@
+[![Generic badge](https://img.shields.io/badge/BUILD-PASS-BLUE.svg)](https://shields.io/)
 # Wordpress_with_remote_DB_ansible
 
 ## About
